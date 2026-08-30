@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import { createRequire } from "node:module";
+import { performance } from "node:perf_hooks";
 import test from "node:test";
 
 import oniguruma from "vscode-oniguruma";
@@ -15,6 +16,8 @@ const grammarPath = new URL("syntaxes/hlo.tmLanguage.json", root);
 const fixturePath = new URL("test/fixtures/basic.hlo", root);
 const typesFixturePath = new URL("test/fixtures/types.hlo", root);
 const literalsFixturePath = new URL("test/fixtures/literals.hlo", root);
+const syntaxFixturePath = new URL("test/fixtures/syntax.hlo", root);
+const dumpsPath = new URL("samples/dumps/", root);
 
 const wasm = await readFile(require.resolve("vscode-oniguruma/release/onig.wasm"));
 await loadWASM(wasm.buffer.slice(wasm.byteOffset, wasm.byteOffset + wasm.byteLength));
@@ -34,6 +37,14 @@ const fixture = await readFile(fixturePath, "utf8");
 const lines = fixture.split(/\r?\n/);
 const typesFixture = await readFile(typesFixturePath, "utf8");
 const literalsFixture = await readFile(literalsFixturePath, "utf8");
+const syntaxFixture = await readFile(syntaxFixturePath, "utf8");
+
+let dumpFiles = [];
+try {
+  dumpFiles = (await readdir(dumpsPath)).filter((file) => file.endsWith(".txt"));
+} catch (error) {
+  if (error.code !== "ENOENT") throw error;
+}
 
 function lineContaining(text) {
   const line = lines.find((candidate) => candidate.includes(text));
@@ -55,6 +66,15 @@ function assertScope(line, text, expectedScope, offsetWithinText = 0) {
     token.scopes.includes(expectedScope),
     `${JSON.stringify(text)} should include ${expectedScope}; got ${token.scopes.join(", ")}`,
   );
+}
+
+function tokenizeDocument(source) {
+  let ruleStack = null;
+  return source.split(/\r?\n/).map((line) => {
+    const result = grammar.tokenizeLine(line, ruleStack);
+    ruleStack = result.ruleStack;
+    return { line, tokens: result.tokens };
+  });
 }
 
 test("highlights module declarations and primitive values", () => {
@@ -156,3 +176,61 @@ test("highlights finite, non-finite, payload, and complex component literals", (
   assertScope(complex, "1.5", "constant.numeric.hlo");
   assertScope(complex, "-2.25e-1", "constant.numeric.hlo");
 });
+
+test("highlights block comments, single-quoted strings, and shape syntax", () => {
+  const rows = tokenizeDocument(syntaxFixture);
+  const continuedComment = rows.find(({ line }) => line.includes("continue across lines"));
+  assert.ok(continuedComment, "syntax fixture should contain a continued block comment");
+  assert.ok(
+    continuedComment.tokens.some(({ scopes }) => scopes.includes("comment.block.hlo")),
+    "the second line of a block comment should retain comment.block.hlo",
+  );
+
+  const stringLine = rows.find(({ line }) => line.includes("'input\\nvalue'"))?.line;
+  assert.ok(stringLine, "syntax fixture should contain a single-quoted string");
+  assertScope(stringLine, "'input", "string.quoted.single.hlo", 1);
+  assertScope(stringLine, "\\n", "constant.character.escape.hlo");
+
+  const shapeLine = rows.find(({ line }) => line.includes("ENTRY %main"))?.line;
+  assert.ok(shapeLine, "syntax fixture should contain a dynamic tiled shape");
+  assertScope(shapeLine, "?", "constant.other.dynamic-dimension.hlo");
+  assertScope(shapeLine, "<=", "punctuation.separator.hlo");
+  assertScope(shapeLine, ":T(", "support.type.layout.hlo", 1);
+  assertScope(shapeLine, "S(", "support.type.layout.hlo");
+  assertScope(shapeLine, "->", "punctuation.separator.hlo");
+
+  const punctuation = rows.find(({ line }) => line === "* # ~ + ...")?.line;
+  assert.ok(punctuation, "syntax fixture should contain standalone punctuation");
+  for (const symbol of ["*", "#", "~", "+", "..."]) {
+    assertScope(punctuation, symbol, "punctuation.separator.hlo");
+  }
+});
+
+test(
+  "tokenizes every local XLA dump with expected structural scopes",
+  { skip: dumpFiles.length === 0 },
+  async () => {
+    const startedAt = performance.now();
+
+    for (const file of dumpFiles) {
+      const source = await readFile(new URL(file, dumpsPath), "utf8");
+      const rows = tokenizeDocument(source);
+      const scopedText = (text, scope) => rows.some(({ line, tokens }) =>
+        tokens.some((token) =>
+          line.slice(token.startIndex, token.endIndex) === text && token.scopes.includes(scope),
+        ),
+      );
+
+      assert.ok(scopedText("HloModule", "keyword.declaration.module.hlo"), `${file}: module keyword`);
+      assert.ok(scopedText("ENTRY", "keyword.control.hlo"), `${file}: entry keyword`);
+      assert.ok(scopedText("ROOT", "keyword.control.hlo"), `${file}: root keyword`);
+      assert.ok(
+        rows.some(({ tokens }) => tokens.some(({ scopes }) => scopes.includes("storage.type.numeric.hlo"))),
+        `${file}: at least one primitive type`,
+      );
+    }
+
+    const elapsedMs = performance.now() - startedAt;
+    assert.ok(elapsedMs < 2000, `local dump tokenization took ${elapsedMs.toFixed(1)} ms`);
+  },
+);
