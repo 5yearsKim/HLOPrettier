@@ -4,7 +4,26 @@
   "description": "Syntax highlighting and editor support for XLA HLO text files.",
   "version": "0.0.1",
   "publisher": "5yearsKim",
+  "author": {
+    "name": "OnionKim",
+    "url": "https://github.com/5yearsKim"
+  },
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/5yearsKim/HLOPrettier.git"
+  },
+  "homepage": "https://github.com/5yearsKim/HLOPrettier#readme",
+  "bugs": {
+    "url": "https://github.com/5yearsKim/HLOPrettier/issues"
+  },
+  "files": [
+    "language-configuration.json",
+    "syntaxes/**/*.json",
+    "README.md",
+    "LICENSE",
+    "NOTICE"
+  ],
   "packageManager": "pnpm@11.24.0",
   "engines": {
     "node": ">=22",
