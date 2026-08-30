@@ -1,7 +1,7 @@
 {
   "name": "hlo-prettier",
   "displayName": "HLO Prettier",
-  "description": "Syntax highlighting and editor support for XLA HLO text files.",
+  "description": "Syntax highlighting and configurable document formatting for XLA HLO text files.",
   "version": "0.0.1",
   "publisher": "5yearsKim",
   "icon": "images/icon.png",
@@ -40,18 +40,20 @@
     "build": "node ./scripts/build.mjs",
     "typecheck": "tsc --noEmit",
     "validate": "node ./scripts/check-json.mjs",
-    "test": "node --test ./test/*.test.mjs",
+    "test": "node --import tsx --test ./test/*.test.mjs",
     "vscode:prepublish": "pnpm run build",
     "package": "pnpm run validate && pnpm run typecheck && pnpm test && vsce package"
   },
   "categories": [
-    "Programming Languages"
+    "Programming Languages",
+    "Formatters"
   ],
   "keywords": [
     "hlo",
     "xla",
     "openxla",
     "compiler",
+    "formatter",
     "prettier",
     "syntax-highlighting"
   ],
@@ -81,12 +83,52 @@
         "scopeName": "source.hlo",
         "path": "./syntaxes/hlo.tmLanguage.json"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "HLO Prettier",
+      "type": "object",
+      "properties": {
+        "hloPrettier.printWidth": {
+          "type": "integer",
+          "default": 120,
+          "minimum": 40,
+          "maximum": 500,
+          "scope": "language-overridable",
+          "description": "Preferred maximum line width when formatting HLO."
+        },
+        "hloPrettier.attributeWrapping": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "preserve",
+            "onePerLine"
+          ],
+          "default": "auto",
+          "scope": "language-overridable",
+          "description": "Controls how trailing instruction attributes are wrapped."
+        },
+        "hloPrettier.formatMetadata": {
+          "type": "boolean",
+          "default": false,
+          "scope": "language-overridable",
+          "description": "Controls whether metadata objects may be reformatted."
+        },
+        "hloPrettier.blankLinesBetweenComputations": {
+          "type": "integer",
+          "default": 1,
+          "minimum": 0,
+          "maximum": 2,
+          "scope": "language-overridable",
+          "description": "Number of blank lines between computation blocks."
+        }
+      }
+    }
   },
   "devDependencies": {
     "@types/vscode": "1.85.0",
     "@vscode/vsce": "3.9.2",
     "esbuild": "0.28.2",
+    "tsx": "4.23.13",
     "typescript": "7.0.2",
     "vscode-oniguruma": "2.0.1",
     "vscode-textmate": "9.3.2"
