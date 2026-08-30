@@ -2,6 +2,105 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "HLO",
   "scopeName": "source.hlo",
-  "patterns": [],
-  "repository": {}
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#module-declaration" },
+    { "include": "#computation-declaration" },
+    { "include": "#instruction-definition" },
+    { "include": "#keywords" },
+    { "include": "#numeric-types" },
+    { "include": "#special-types" },
+    { "include": "#booleans" },
+    { "include": "#special-numbers" },
+    { "include": "#parameter-declarations" },
+    { "include": "#attribute-names" },
+    { "include": "#identifiers" },
+    { "include": "#numbers" },
+    { "include": "#punctuation" }
+  ],
+  "repository": {
+    "comments": {
+      "match": "//.*$",
+      "name": "comment.line.double-slash.hlo"
+    },
+    "strings": {
+      "begin": "\"",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.string.begin.hlo" }
+      },
+      "end": "\"",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.string.end.hlo" }
+      },
+      "name": "string.quoted.double.hlo",
+      "patterns": [
+        {
+          "match": "\\\\(?:[\\\\\"nrt]|x[0-9A-Fa-f]{2}|[0-7]{1,3})",
+          "name": "constant.character.escape.hlo"
+        }
+      ]
+    },
+    "module-declaration": {
+      "match": "\\b(HloModule)(\\s+)([A-Za-z_][A-Za-z0-9_.-]*)",
+      "captures": {
+        "1": { "name": "keyword.declaration.module.hlo" },
+        "3": { "name": "entity.name.module.hlo" }
+      }
+    },
+    "computation-declaration": {
+      "match": "^\\s*(?:(ENTRY)\\s+)?(%(?:[A-Za-z_][A-Za-z0-9_.-]*|\"(?:\\\\.|[^\"\\\\])*\"))(?=\\s*\\()",
+      "captures": {
+        "1": { "name": "keyword.control.hlo" },
+        "2": { "name": "entity.name.function.hlo" }
+      }
+    },
+    "instruction-definition": {
+      "match": "^\\s*(?:(ROOT)\\s+)?(%(?:[A-Za-z_][A-Za-z0-9_.-]*|\"(?:\\\\.|[^\"\\\\])*\"))(?=\\s*=)",
+      "captures": {
+        "1": { "name": "keyword.control.hlo" },
+        "2": { "name": "entity.name.variable.hlo" }
+      }
+    },
+    "keywords": {
+      "match": "\\b(?:ENTRY|ROOT)\\b",
+      "name": "keyword.control.hlo"
+    },
+    "numeric-types": {
+      "match": "\\b(?:pred|[su](?:1|2|4|8|16|32|64)|bf16|f(?:16|32|64)|f8e5m2|f8e4m3(?:fn|b11fnuz|fnuz)?|f8e3m4|f8e5m2fnuz|f8e8m0fnu|f6(?:e3m2|e2m3)fn|f4e2m1fn|c(?:64|128))\\b",
+      "name": "storage.type.numeric.hlo"
+    },
+    "special-types": {
+      "match": "\\b(?:opaque|token)\\b",
+      "name": "storage.type.hlo"
+    },
+    "booleans": {
+      "match": "\\b(?:true|false)\\b",
+      "name": "constant.language.boolean.hlo"
+    },
+    "special-numbers": {
+      "match": "(?<![A-Za-z0-9_])-?(?:inf|nan(?:\\(0x[0-9A-Fa-f]+\\))?)(?![A-Za-z0-9_])",
+      "name": "constant.numeric.hlo"
+    },
+    "parameter-declarations": {
+      "match": "\\b[A-Za-z_][A-Za-z0-9_.-]*(?=\\s*:)",
+      "name": "variable.parameter.hlo"
+    },
+    "attribute-names": {
+      "match": "\\b[A-Za-z_][A-Za-z0-9_.-]*(?=\\s*=)",
+      "name": "variable.other.property.hlo"
+    },
+    "identifiers": {
+      "match": "%(?:[A-Za-z_][A-Za-z0-9_.-]*|\"(?:\\\\.|[^\"\\\\])*\")",
+      "name": "variable.other.hlo"
+    },
+    "numbers": {
+      "match": "(?<![A-Za-z0-9_])[-+]?(?:(?:[0-9]+(?:\\.[0-9]*)?|\\.[0-9]+)(?:[eE][-+]?[0-9]+)?)(?![A-Za-z0-9_])",
+      "name": "constant.numeric.hlo"
+    },
+    "punctuation": {
+      "match": "[{}\\[\\](),:=]|->",
+      "name": "punctuation.separator.hlo"
+    }
+  }
 }

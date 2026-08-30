@@ -1,0 +1,14 @@
+// A compact fixture derived from an XLA CPU dump.
+HloModule jit_example, is_scheduled=true, entry_computation_layout={(f32[32,64]{1,0})->f32[32]{0}}
+
+%sum (lhs: f32[], rhs: f32[]) -> f32[] {
+  %lhs = f32[] parameter(0)
+  %rhs = f32[] parameter(1)
+  ROOT %result = f32[] add(%lhs, %rhs)
+}
+
+ENTRY %main (input: f32[32,64]) -> f32[32] {
+  %input = f32[32,64]{1,0} parameter(0), metadata={op_name="input"}
+  %zero = f32[] constant(0.0)
+  ROOT %output = f32[32]{0} reduce(%input, %zero), dimensions={1}, to_apply=%sum
+}

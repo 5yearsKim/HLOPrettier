@@ -21,3 +21,11 @@ pnpm install
 pnpm run validate
 pnpm package
 ```
+
+To preview changes without reinstalling a VSIX, open this repository in VS Code
+and press <kbd>F5</kbd>. The Extension Development Host opens the project with
+the extension loaded from the working tree. Open any `.hlo` file or recognized
+XLA dump from the Explorer to inspect its highlighting.
+
+Run `pnpm run validate` and `pnpm test` separately before packaging or
+committing changes. They are not required to launch the visual preview.

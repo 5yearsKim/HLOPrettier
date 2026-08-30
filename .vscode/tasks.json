@@ -1,0 +1,26 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Validate manifests",
+      "type": "process",
+      "command": "pnpm",
+      "args": ["run", "validate"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Test grammar",
+      "type": "process",
+      "command": "pnpm",
+      "args": ["test"],
+      "problemMatcher": [],
+      "group": "test"
+    },
+    {
+      "label": "Verify extension",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Validate manifests", "Test grammar"],
+      "problemMatcher": []
+    }
+  ]
+}

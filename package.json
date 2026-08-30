@@ -31,7 +31,8 @@
   },
   "scripts": {
     "validate": "node ./scripts/check-json.mjs",
-    "package": "pnpm run validate && vsce package"
+    "test": "node --test ./test/*.test.mjs",
+    "package": "pnpm run validate && pnpm test && vsce package"
   },
   "categories": [
     "Programming Languages"
@@ -73,6 +74,8 @@
     ]
   },
   "devDependencies": {
-    "@vscode/vsce": "3.9.2"
+    "@vscode/vsce": "3.9.2",
+    "vscode-oniguruma": "2.0.1",
+    "vscode-textmate": "9.3.2"
   }
 }

@@ -1,0 +1,11 @@
+HloModule literal_examples
+
+ENTRY %main () -> c64[] {
+  %positive_inf = f32[] constant(inf)
+  %negative_inf = f32[] constant(-inf)
+  %quiet_nan = f32[] constant(nan)
+  %payload_nan = f32[] constant(nan(0x2a))
+  %negative_payload_nan = f32[] constant(-nan(0x2A))
+  %scientific = f64[] constant(-1.25e+3)
+  ROOT %complex = c64[] constant((1.5, -2.25e-1))
+}

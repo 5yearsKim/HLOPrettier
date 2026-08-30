@@ -4,6 +4,9 @@ const files = [
   "package.json",
   "language-configuration.json",
   "syntaxes/hlo.tmLanguage.json",
+  ".vscode/extensions.json",
+  ".vscode/launch.json",
+  ".vscode/tasks.json",
 ];
 
 for (const file of files) {
