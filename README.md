@@ -5,6 +5,11 @@ Readable XLA HLO, right inside Visual Studio Code.
 HLO Prettier combines theme-friendly syntax highlighting with configurable
 document formatting for `.hlo` files and common XLA/JAX text dumps.
 
+[XLA](https://openxla.org/xla) is an open-source compiler that optimizes machine
+learning models for CPUs, GPUs, and other accelerators. HLO is its internal
+representation, progressively optimized and transformed by
+[HLO passes](https://openxla.org/xla/hlo_passes).
+
 ![HLO syntax highlighting](images/hlo_highlight.png)
 
 ## Highlights
