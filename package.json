@@ -27,6 +27,8 @@
     "syntaxes/**/*.json",
     "dist/extension.js",
     "images/icon.png",
+    "images/hlo-light.png",
+    "images/hlo-dark.png",
     "images/hlo_highlight.png",
     "images/hlo_pretty_format.gif",
     "README.md",
@@ -77,7 +79,11 @@
           "*.cpu_after_optimizations.txt",
           "*.gpu_after_optimizations.txt"
         ],
-        "configuration": "./language-configuration.json"
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./images/hlo-light.png",
+          "dark": "./images/hlo-dark.png"
+        }
       }
     ],
     "grammars": [
