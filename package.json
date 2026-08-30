@@ -5,6 +5,10 @@
   "version": "0.0.1",
   "publisher": "5yearsKim",
   "icon": "images/icon.png",
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:hlo"
+  ],
   "author": {
     "name": "OnionKim",
     "url": "https://github.com/5yearsKim"
@@ -21,6 +25,7 @@
   "files": [
     "language-configuration.json",
     "syntaxes/**/*.json",
+    "dist/extension.js",
     "images/icon.png",
     "README.md",
     "LICENSE",
@@ -32,9 +37,12 @@
     "vscode": "^1.85.0"
   },
   "scripts": {
+    "build": "node ./scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
     "validate": "node ./scripts/check-json.mjs",
     "test": "node --test ./test/*.test.mjs",
-    "package": "pnpm run validate && pnpm test && vsce package"
+    "vscode:prepublish": "pnpm run build",
+    "package": "pnpm run validate && pnpm run typecheck && pnpm test && vsce package"
   },
   "categories": [
     "Programming Languages"
@@ -76,7 +84,10 @@
     ]
   },
   "devDependencies": {
+    "@types/vscode": "1.85.0",
     "@vscode/vsce": "3.9.2",
+    "esbuild": "0.28.2",
+    "typescript": "7.0.2",
     "vscode-oniguruma": "2.0.1",
     "vscode-textmate": "9.3.2"
   }

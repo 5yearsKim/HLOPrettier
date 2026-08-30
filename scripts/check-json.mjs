@@ -7,6 +7,7 @@ const files = [
   ".vscode/extensions.json",
   ".vscode/launch.json",
   ".vscode/tasks.json",
+  "tsconfig.json",
 ];
 
 for (const file of files) {
