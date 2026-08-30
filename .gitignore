@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Build and test output
+dist/
+out/
+coverage/
+.vscode-test/
+.nyc_output/
+
+# Packaged extensions
+*.vsix
+
+# Logs
+*.log
+pnpm-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local environment files
+.env
+.env.*
+!.env.example
+
+# Editor-local files; keep shared VS Code project configuration
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+!.vscode/tasks.json
+*.code-workspace
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db

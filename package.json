@@ -1,0 +1,59 @@
+{
+  "name": "hlo-prettier",
+  "displayName": "HLO Prettier",
+  "description": "Syntax highlighting and editor support for XLA HLO text files.",
+  "version": "0.0.1",
+  "publisher": "5yearsKim",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@11.24.0",
+  "engines": {
+    "node": ">=22",
+    "vscode": "^1.85.0"
+  },
+  "scripts": {
+    "validate": "node ./scripts/check-json.mjs",
+    "package": "pnpm run validate && vsce package"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "hlo",
+    "xla",
+    "openxla",
+    "compiler",
+    "prettier",
+    "syntax-highlighting"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "hlo",
+        "aliases": [
+          "HLO",
+          "hlo"
+        ],
+        "extensions": [
+          ".hlo"
+        ],
+        "filenamePatterns": [
+          "module_*.jit_*.txt",
+          "*before_optimizations.txt",
+          "*.cpu_after_optimizations.txt",
+          "*.gpu_after_optimizations.txt"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "hlo",
+        "scopeName": "source.hlo",
+        "path": "./syntaxes/hlo.tmLanguage.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@vscode/vsce": "3.9.2"
+  }
+}
