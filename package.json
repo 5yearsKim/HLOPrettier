@@ -4,6 +4,7 @@
   "description": "Syntax highlighting and editor support for XLA HLO text files.",
   "version": "0.0.1",
   "publisher": "5yearsKim",
+  "icon": "images/icon.png",
   "author": {
     "name": "OnionKim",
     "url": "https://github.com/5yearsKim"
@@ -20,6 +21,7 @@
   "files": [
     "language-configuration.json",
     "syntaxes/**/*.json",
+    "images/icon.png",
     "README.md",
     "LICENSE",
     "NOTICE"

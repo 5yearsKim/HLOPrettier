@@ -3,23 +3,57 @@
   "name": "HLO",
   "scopeName": "source.hlo",
   "patterns": [
-    { "include": "#comments" },
-    { "include": "#strings" },
-    { "include": "#module-declaration" },
-    { "include": "#computation-declaration" },
-    { "include": "#instruction-definition" },
-    { "include": "#keywords" },
-    { "include": "#numeric-types" },
-    { "include": "#special-types" },
-    { "include": "#booleans" },
-    { "include": "#special-numbers" },
-    { "include": "#parameter-declarations" },
-    { "include": "#attribute-names" },
-    { "include": "#identifiers" },
-    { "include": "#numbers" },
-    { "include": "#dynamic-dimensions" },
-    { "include": "#layout-markers" },
-    { "include": "#punctuation" }
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#module-declaration"
+    },
+    {
+      "include": "#computation-declaration"
+    },
+    {
+      "include": "#instruction-definition"
+    },
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#numeric-types"
+    },
+    {
+      "include": "#special-types"
+    },
+    {
+      "include": "#booleans"
+    },
+    {
+      "include": "#special-numbers"
+    },
+    {
+      "include": "#parameter-declarations"
+    },
+    {
+      "include": "#attribute-names"
+    },
+    {
+      "include": "#identifiers"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#dynamic-dimensions"
+    },
+    {
+      "include": "#layout-markers"
+    },
+    {
+      "include": "#punctuation"
+    }
   ],
   "repository": {
     "comments": {
@@ -31,11 +65,15 @@
         {
           "begin": "/\\*",
           "beginCaptures": {
-            "0": { "name": "punctuation.definition.comment.begin.hlo" }
+            "0": {
+              "name": "punctuation.definition.comment.begin.hlo"
+            }
           },
           "end": "\\*/",
           "endCaptures": {
-            "0": { "name": "punctuation.definition.comment.end.hlo" }
+            "0": {
+              "name": "punctuation.definition.comment.end.hlo"
+            }
           },
           "name": "comment.block.hlo"
         }
@@ -46,26 +84,42 @@
         {
           "begin": "\"",
           "beginCaptures": {
-            "0": { "name": "punctuation.definition.string.begin.hlo" }
+            "0": {
+              "name": "punctuation.definition.string.begin.hlo"
+            }
           },
           "end": "\"",
           "endCaptures": {
-            "0": { "name": "punctuation.definition.string.end.hlo" }
+            "0": {
+              "name": "punctuation.definition.string.end.hlo"
+            }
           },
           "name": "string.quoted.double.hlo",
-          "patterns": [{ "include": "#string-escapes" }]
+          "patterns": [
+            {
+              "include": "#string-escapes"
+            }
+          ]
         },
         {
           "begin": "'",
           "beginCaptures": {
-            "0": { "name": "punctuation.definition.string.begin.hlo" }
+            "0": {
+              "name": "punctuation.definition.string.begin.hlo"
+            }
           },
           "end": "'",
           "endCaptures": {
-            "0": { "name": "punctuation.definition.string.end.hlo" }
+            "0": {
+              "name": "punctuation.definition.string.end.hlo"
+            }
           },
           "name": "string.quoted.single.hlo",
-          "patterns": [{ "include": "#string-escapes" }]
+          "patterns": [
+            {
+              "include": "#string-escapes"
+            }
+          ]
         }
       ]
     },
@@ -76,22 +130,34 @@
     "module-declaration": {
       "match": "\\b(HloModule)(\\s+)([A-Za-z_][A-Za-z0-9_.-]*)",
       "captures": {
-        "1": { "name": "keyword.declaration.module.hlo" },
-        "3": { "name": "entity.name.module.hlo" }
+        "1": {
+          "name": "keyword.declaration.module.hlo"
+        },
+        "3": {
+          "name": "entity.name.module.hlo"
+        }
       }
     },
     "computation-declaration": {
       "match": "^\\s*(?:(ENTRY)\\s+)?(%(?:[A-Za-z_][A-Za-z0-9_.-]*|\"(?:\\\\.|[^\"\\\\])*\"))(?=\\s*\\()",
       "captures": {
-        "1": { "name": "keyword.control.hlo" },
-        "2": { "name": "entity.name.function.hlo" }
+        "1": {
+          "name": "keyword.control.hlo"
+        },
+        "2": {
+          "name": "entity.name.function.hlo"
+        }
       }
     },
     "instruction-definition": {
       "match": "^\\s*(?:(ROOT)\\s+)?(%(?:[A-Za-z_][A-Za-z0-9_.-]*|\"(?:\\\\.|[^\"\\\\])*\"))(?=\\s*=)",
       "captures": {
-        "1": { "name": "keyword.control.hlo" },
-        "2": { "name": "entity.name.variable.hlo" }
+        "1": {
+          "name": "keyword.control.hlo"
+        },
+        "2": {
+          "name": "entity.name.variable.hlo"
+        }
       }
     },
     "keywords": {
