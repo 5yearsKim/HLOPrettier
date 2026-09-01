@@ -2,6 +2,10 @@
 
 All notable changes to HLO Prettier are documented here.
 
+## 0.1.2
+
+- Added indentation for long `backend_config` JSON values.
+
 ## 0.1.1
 
 - Improved automatic language detection for XLA/JAX HLO dumps with generic

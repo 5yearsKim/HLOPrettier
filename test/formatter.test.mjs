@@ -189,6 +189,44 @@ test("supports preserve and onePerLine attribute wrapping", () => {
   assert.match(onePerLine, /call\(\),\n    to_apply=%helper,\n    frontend_attributes=\{x=1\}/);
 });
 
+test("expands long backend_config JSON and leaves short or invalid values alone", () => {
+  const input = [
+    "ENTRY %main () -> f32[] {",
+    'ROOT %result = f32[] custom-call(), backend_config={"device_type":"DEVICE_TYPE_INVALID","gemm_backend_config":{"alpha_real":1,"beta":0}}, metadata={op_name="dot"}',
+    "}",
+  ].join("\n");
+
+  const expected = [
+    "ENTRY %main () -> f32[] {",
+    "  ROOT %result = f32[] custom-call(),",
+    "    backend_config={",
+    '      "device_type": "DEVICE_TYPE_INVALID",',
+    '      "gemm_backend_config": {',
+    '        "alpha_real": 1,',
+    '        "beta": 0',
+    "      }",
+    "    },",
+    '    metadata={op_name="dot"}',
+    "}",
+  ].join("\n");
+
+  const formatted = formatHlo(input, { ...spaces, printWidth: 60 });
+  assert.equal(formatted, expected);
+  assert.equal(formatHlo(formatted, { ...spaces, printWidth: 60 }), expected);
+
+  const short = '    backend_config={"alpha":1}';
+  assert.equal(
+    formatHlo(short, { ...spaces, printWidth: 120 }),
+    'backend_config={"alpha":1}',
+  );
+
+  const invalid = "    backend_config={not-json-but-valid-hlo:true}";
+  assert.equal(
+    formatHlo(invalid, { ...spaces, printWidth: 20 }),
+    "backend_config={not-json-but-valid-hlo:true}",
+  );
+});
+
 test("formats metadata internals only when enabled", () => {
   const input = [
     "ENTRY %main () -> f32[] {",
