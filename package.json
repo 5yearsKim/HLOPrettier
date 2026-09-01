@@ -2,7 +2,7 @@
   "name": "hlo-prettier",
   "displayName": "HLO Prettier",
   "description": "Syntax highlighting and configurable document formatting for XLA HLO text files.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "5yearsKim",
   "icon": "images/icon.png",
   "main": "./dist/extension.js",

@@ -2,6 +2,14 @@
 
 All notable changes to HLO Prettier are documented here.
 
+## 0.1.1
+
+- Improved automatic language detection for XLA/JAX HLO dumps with generic
+  computation names, timestamp prefixes, and accelerator-specific optimized
+  suffixes.
+- Restricted text dump detection to filenames containing a four-digit XLA
+  module sequence and a pre- or post-optimization suffix.
+
 ## 0.1.0
 
 Initial release.
