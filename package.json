@@ -74,10 +74,7 @@
           ".hlo"
         ],
         "filenamePatterns": [
-          "module_*.jit_*.txt",
-          "*before_optimizations.txt",
-          "*.cpu_after_optimizations.txt",
-          "*.gpu_after_optimizations.txt"
+          "*module_[0-9][0-9][0-9][0-9].*{before_optimizations,after_optimizations}.txt"
         ],
         "configuration": "./language-configuration.json",
         "icon": {

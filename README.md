@@ -65,11 +65,14 @@ HLO Prettier recognizes `.hlo` files and these common dump patterns without
 taking over every `.txt` file:
 
 ```text
-module_*.jit_*.txt
-*before_optimizations.txt
-*.cpu_after_optimizations.txt
-*.gpu_after_optimizations.txt
+*module_[0-9][0-9][0-9][0-9].*{before_optimizations,after_optimizations}.txt
 ```
+
+The module pattern requires the conventional four-digit module sequence while
+covering timestamp-prefixed dumps, computation names other than `jit_*`,
+accelerator-specific suffixes such as
+`sm_90_gpu_after_optimizations`, and either pre- or post-optimization HLO. The
+particular sequence value, such as `module_0000`, is not assumed to be stable.
 
 For another filename, select **HLO** using VS Code's language-mode picker.
 

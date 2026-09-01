@@ -14,6 +14,15 @@ test("registers an HLO document formatting provider", async () => {
   assert.match(source, /provideDocumentFormattingEdits/);
 });
 
+test("recognizes generic XLA text dump filenames", async () => {
+  const manifest = JSON.parse(await readFile(new URL("package.json", root), "utf8"));
+  const patterns = manifest.contributes.languages.find(({ id }) => id === "hlo").filenamePatterns;
+
+  assert.deepEqual(patterns, [
+    "*module_[0-9][0-9][0-9][0-9].*{before_optimizations,after_optimizations}.txt",
+  ]);
+});
+
 test("contributes the documented HLO formatting settings", async () => {
   const manifest = JSON.parse(await readFile(new URL("package.json", root), "utf8"));
   const properties = manifest.contributes.configuration.properties;
